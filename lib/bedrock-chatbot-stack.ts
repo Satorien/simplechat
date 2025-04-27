@@ -12,6 +12,9 @@ import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as path from 'path';
 import * as cr from 'aws-cdk-lib/custom-resources';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export interface BedrockChatbotStackProps extends cdk.StackProps {
   modelId?: string;
@@ -21,7 +24,7 @@ export class BedrockChatbotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: BedrockChatbotStackProps) {
     super(scope, id, props);
 
-    const modelId = props?.modelId || 'us.amazon.nova-lite-v1:0';
+    // const modelId = props?.modelId || 'us.amazon.nova-lite-v1:0';
 
     // Cognito User Poolの作成
     const userPool = new cognito.UserPool(this, 'ChatbotUserPool', {
@@ -157,7 +160,8 @@ export class BedrockChatbotStack extends cdk.Stack {
       memorySize: 128,
       role: lambdaRole,
       environment: {
-        MODEL_ID: modelId,
+        API_ENDPOINT: process.env.API_ENDPOINT || ''
+        // MODEL_ID: modelId,
       },
     });
 
