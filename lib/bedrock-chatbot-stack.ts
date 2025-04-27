@@ -155,7 +155,7 @@ export class BedrockChatbotStack extends cdk.Stack {
     const chatFunction = new lambda.Function(this, 'ChatFunction', {
       runtime: lambda.Runtime.PYTHON_3_10,
       handler: 'index.lambda_handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/lambda_package'),),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/lambda'),),
       timeout: cdk.Duration.seconds(60),
       memorySize: 128,
       role: lambdaRole,
