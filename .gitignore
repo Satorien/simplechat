@@ -4,6 +4,7 @@ cdk.out/
 # 依存関係
 node_modules/
 frontend/node_modules/
+lambda/lambda_package/
 
 # ロックファイル
 package-lock.json
@@ -16,3 +17,4 @@ frontend/build/
 .DS_Store
 *.log
 *.env
+*.zip

@@ -143,20 +143,20 @@ export class BedrockChatbotStack extends cdk.Stack {
     });
 
     // Bedrockへのアクセス権限を追加
-    lambdaRole.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'bedrock:InvokeModel',
-        'bedrock:InvokeModelWithResponseStream'
-      ],
-      resources: ['*']
-    }));
+    // lambdaRole.addToPolicy(new iam.PolicyStatement({
+    //   actions: [
+    //     'bedrock:InvokeModel',
+    //     'bedrock:InvokeModelWithResponseStream'
+    //   ],
+    //   resources: ['*']
+    // }));
 
     // Lambda function
     const chatFunction = new lambda.Function(this, 'ChatFunction', {
       runtime: lambda.Runtime.PYTHON_3_10,
       handler: 'index.lambda_handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
-      timeout: cdk.Duration.seconds(30),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/lambda_package'),),
+      timeout: cdk.Duration.seconds(60),
       memorySize: 128,
       role: lambdaRole,
       environment: {
@@ -172,8 +172,8 @@ export class BedrockChatbotStack extends cdk.Stack {
 
     // API Gateway with Cognito Authorizer
     const api = new apigateway.RestApi(this, 'ChatbotApi', {
-      restApiName: 'Bedrock Chatbot API',
-      description: 'API for Bedrock Converse chatbot',
+      restApiName: 'Chatbot API',
+      description: 'API for chatbot',
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
@@ -440,10 +440,10 @@ export class BedrockChatbotStack extends cdk.Stack {
       description: 'The URL of the API Gateway endpoint',
     });
 
-    new cdk.CfnOutput(this, 'ModelId', {
-      value: modelId,
-      description: 'The Bedrock model ID being used',
-    });
+    // new cdk.CfnOutput(this, 'ModelId', {
+    //   value: modelId,
+    //   description: 'The Bedrock model ID being used',
+    // });
 
     new cdk.CfnOutput(this, 'UserPoolId', {
       value: userPool.userPoolId,
